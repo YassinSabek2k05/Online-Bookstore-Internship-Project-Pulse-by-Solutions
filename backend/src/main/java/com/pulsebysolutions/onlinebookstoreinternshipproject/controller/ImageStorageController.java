@@ -16,10 +16,6 @@ public class ImageStorageController {
     }
     @PostMapping
     public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile file) throws IOException {
-        file.getOriginalFilename();   // "hamlet.jpg" — client-supplied, don't fully trust
-        file.getContentType();        // "image/jpeg" — client-supplied, also not fully trustworthy
-        file.getSize();               // bytes
-        byte[] data = file.getBytes(); // the actual raw image bytes, this is what you persist
         return ResponseEntity.ok(imageStorageService.store(file));
     }
     @GetMapping({"/{key}"})

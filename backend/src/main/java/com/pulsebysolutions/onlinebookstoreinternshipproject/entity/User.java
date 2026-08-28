@@ -25,6 +25,7 @@ public class User implements UserDetails {
     private String password;
     private String phone;
     @Builder.Default
+    @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

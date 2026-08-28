@@ -36,7 +36,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/books/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/users/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.GET,"/api/images/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/images/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/images/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/images/**").hasRole("ADMIN")

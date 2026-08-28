@@ -17,7 +17,6 @@ public class BookImage {
     @Id
     private String key;           // UUID + extension, e.g. "3f9a2b1c-...-e21.jpg" — acts as the "object key"
 
-    @Lob
     @Column(columnDefinition = "BYTEA")
     private byte[] data;
 
