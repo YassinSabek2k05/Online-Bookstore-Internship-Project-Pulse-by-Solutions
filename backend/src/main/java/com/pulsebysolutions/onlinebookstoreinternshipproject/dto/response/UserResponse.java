@@ -1,13 +1,21 @@
 package com.pulsebysolutions.onlinebookstoreinternshipproject.dto.response;
 
+import com.pulsebysolutions.onlinebookstoreinternshipproject.entity.User;
+import com.pulsebysolutions.onlinebookstoreinternshipproject.entity.User.Role;
+
 public record UserResponse(
-    String email,
-    String phone
+        Long id,
+        String email,
+        String phone,
+        Role role
 ) {
-    public static UserResponse fromUser(com.pulsebysolutions.onlinebookstoreinternshipproject.entity.User user) {
+
+    public static UserResponse fromUser(User user) {
         return new UserResponse(
-            user.getEmail(),
-            user.getPhone()
+                user.getId(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getRole()
         );
     }
 }
