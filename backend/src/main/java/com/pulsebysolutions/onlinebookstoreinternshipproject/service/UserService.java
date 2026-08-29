@@ -24,23 +24,23 @@ public class UserService implements UserDetailsService {
         return userRepository.getByEmail(email);
     }
 
-    public UserResponse getCurrentUser() {
-
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
-
-        String email = authentication.getName();
-
-        User user = userRepository.getByEmail(email);
-
-        if (user == null) {
-            throw new ResourceNotFoundException(
-                    "User not found with email: " + email
-            );
-        }
-
-        return UserResponse.fromUser(user);
-    }
+//    public UserResponse getCurrentUser() {
+//
+//        Authentication authentication =
+//                SecurityContextHolder.getContext().getAuthentication();
+//
+//        String email = authentication.getName();
+//
+//        User user = userRepository.getByEmail(email);
+//
+//        if (user == null) {
+//            throw new ResourceNotFoundException(
+//                    "User not found with email: " + email
+//            );
+//        }
+//
+//        return UserResponse.fromUser(user);
+//    }
 
     @Override
     public UserDetails loadUserByUsername(String email)
@@ -56,7 +56,4 @@ public class UserService implements UserDetailsService {
 
         return user;
     }
-    // Returns the currently authenticated user's information.
-    public UserResponse getCurrentUser() {
-
 }
