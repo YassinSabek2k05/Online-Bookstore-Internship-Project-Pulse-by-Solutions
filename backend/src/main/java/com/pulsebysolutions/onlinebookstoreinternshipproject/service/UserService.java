@@ -56,4 +56,7 @@ public class UserService implements UserDetailsService {
 
         return user;
     }
+    // Returns the currently authenticated user's information.
+    public UserResponse getCurrentUser() {
+
 }
