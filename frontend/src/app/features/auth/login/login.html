@@ -1,0 +1,58 @@
+<div class="auth-page">
+  <div class="wordmark">BOOK STORE</div>
+
+  <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="auth-head">
+      <h1>Sign in</h1>
+      <app-theme-toggle />
+    </div>
+
+    <div class="fields">
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          [class.invalid]="form.controls.email.touched && form.controls.email.invalid"
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <span class="field-error">
+            @if (form.controls.email.hasError('required')) {
+              Email is required.
+            } @else {
+              Enter a valid email address.
+            }
+          </span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="••••••••"
+          autocomplete="current-password"
+          [class.invalid]="form.controls.password.touched && form.controls.password.invalid"
+        />
+        @if (form.controls.password.touched && form.controls.password.hasError('required')) {
+          <span class="field-error">Password is required.</span>
+        }
+      </div>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="form-error">{{ errorMessage() }}</p>
+    }
+
+    <button class="submit" type="submit" [disabled]="submitting()">
+      {{ submitting() ? 'Signing in…' : 'Sign in' }}
+    </button>
+  </form>
+
+  <p class="auth-foot">New here? <a routerLink="/signup">Create an account</a></p>
+</div>

@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+/* Design tokens — every page reads these, so light/dark is defined once here. */
+
+:root {
+  --bg: #f4f1ea;
+  --surface: #ffffff;
+  --text: #382110;
+  --text-muted: #6d6355;
+  --border: #d6d0c4;
+  --accent: #75412e;
+  --accent-hover: #382110;
+  --btn-bg: #382110;
+  --btn-bg-hover: #4d2f18;
+  --btn-fg: #ffffff;
+  --placeholder: #a9a093;
+  --danger: #a33a2a;
+  --focus-ring: rgba(56, 33, 16, 0.22);
+
+  --radius: 3px;
+  --font-display: Merriweather, Georgia, serif;
+  --font-body: Lato, 'Helvetica Neue', sans-serif;
+}
+
+:root[data-theme='dark'] {
+  --bg: #1b1611;
+  --surface: #241e18;
+  --text: #ede6da;
+  --text-muted: #a99c8b;
+  --border: #3b322a;
+  --accent: #d8a88a;
+  --accent-hover: #ecc8ae;
+  --btn-bg: #e8dfd2;
+  --btn-bg-hover: #f5efe5;
+  --btn-fg: #241e18;
+  --placeholder: #7a6e60;
+  --danger: #e08975;
+  --focus-ring: rgba(232, 223, 210, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}

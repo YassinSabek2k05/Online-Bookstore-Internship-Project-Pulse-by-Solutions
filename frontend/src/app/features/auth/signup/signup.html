@@ -1,0 +1,104 @@
+<div class="auth-page">
+  <div class="wordmark">BOOK STORE</div>
+
+  <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="auth-head">
+      <h1>Create account</h1>
+      <app-theme-toggle />
+    </div>
+
+    <div class="fields">
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          [class.invalid]="form.controls.email.touched && form.controls.email.invalid"
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <span class="field-error">
+            @if (form.controls.email.hasError('required')) {
+              Email is required.
+            } @else {
+              Enter a valid email address.
+            }
+          </span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="+962 7 9999 9999"
+          autocomplete="tel"
+          [class.invalid]="form.controls.phone.touched && form.controls.phone.invalid"
+        />
+        @if (form.controls.phone.touched && form.controls.phone.invalid) {
+          <span class="field-error">
+            @if (form.controls.phone.hasError('required')) {
+              Phone number is required.
+            } @else {
+              Enter a valid phone number.
+            }
+          </span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="At least 8 characters"
+          autocomplete="new-password"
+          [class.invalid]="form.controls.password.touched && form.controls.password.invalid"
+        />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+          <span class="field-error">
+            @if (form.controls.password.hasError('required')) {
+              Password is required.
+            } @else {
+              Use at least 8 characters.
+            }
+          </span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="confirmPassword">Confirm password</label>
+        <input
+          id="confirmPassword"
+          type="password"
+          formControlName="confirmPassword"
+          placeholder="••••••••"
+          autocomplete="new-password"
+          [class.invalid]="form.controls.confirmPassword.touched && form.hasError('passwordMismatch')"
+        />
+        @if (form.controls.confirmPassword.touched) {
+          @if (form.controls.confirmPassword.hasError('required')) {
+            <span class="field-error">Please confirm your password.</span>
+          } @else if (form.hasError('passwordMismatch')) {
+            <span class="field-error">Passwords do not match.</span>
+          }
+        }
+      </div>
+    </div>
+
+    @if (errorMessage()) {
+      <p class="form-error">{{ errorMessage() }}</p>
+    }
+
+    <button class="submit" type="submit" [disabled]="submitting()">
+      {{ submitting() ? 'Creating account…' : 'Create account' }}
+    </button>
+  </form>
+
+  <p class="auth-foot">Already have an account? <a routerLink="/login">Sign in</a></p>
+</div>
