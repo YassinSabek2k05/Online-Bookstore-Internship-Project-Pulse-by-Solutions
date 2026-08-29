@@ -4,6 +4,7 @@ import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.request.LoginRe
 import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.request.RegisterRequest;
 import com.pulsebysolutions.onlinebookstoreinternshipproject.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,21 +14,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
     private final AuthService authService;
+
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
+
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginRequest request, HttpServletResponse response) {
+    public ResponseEntity<Void> login(
+            @RequestBody LoginRequest request,
+            HttpServletResponse response) {
+
         response.addCookie(authService.login(request));
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<Void> register(
+            @Valid @RequestBody RegisterRequest request) {
+
         authService.register(request);
         return ResponseEntity.status(201).build();
     }
-
-
 }
