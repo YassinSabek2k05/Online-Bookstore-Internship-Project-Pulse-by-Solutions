@@ -5,11 +5,12 @@ import { ApiError } from '../../../core/models/api-error.model';
 import { Book } from '../../../core/models/book.model';
 import { BooksApi } from '../../../core/services/api/books';
 import { BookCover } from '../../../shared/book-cover/book-cover';
+import { Footer } from '../../../shared/footer/footer';
 import { Navbar } from '../../../shared/navbar/navbar';
 
 @Component({
   selector: 'app-book-details',
-  imports: [CurrencyPipe, RouterLink, Navbar, BookCover],
+  imports: [CurrencyPipe, RouterLink, Navbar, BookCover, Footer],
   templateUrl: './book-details.html',
   styleUrl: './book-details.css',
 })

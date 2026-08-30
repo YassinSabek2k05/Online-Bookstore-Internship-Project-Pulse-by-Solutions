@@ -1,7 +1,16 @@
+/* Keeps the footer at the bottom on short pages (loading, 404). */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .details {
+  width: 100%;
   max-width: 1000px;
   margin: 0 auto;
   padding: 40px 24px 96px;
+  flex-grow: 1;
 }
 
 .back {

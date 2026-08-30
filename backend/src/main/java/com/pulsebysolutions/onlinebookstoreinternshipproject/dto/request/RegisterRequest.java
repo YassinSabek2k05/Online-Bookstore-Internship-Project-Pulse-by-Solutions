@@ -33,8 +33,11 @@ public record RegisterRequest(
 ) {
 
     /**
-     * Named isXxx so Bean Validation treats it as a property — the violation
-     * then surfaces as a field error, which is what the exception handler reads.
+     * Looks uncalled, but @Valid invokes it reflectively: Bean Validation reads
+     * isXxx()/getXxx() as properties, so the constraint must RETURN false rather
+     * than throw, and the return type must stay boolean. A void return makes
+     * Hibernate Validator abort the whole class with HV000132, which silently
+     * disables every other rule on this record too.
      */
     @AssertTrue(message = "Confirm password must match password")
     public boolean isPasswordConfirmed() {

@@ -3,7 +3,7 @@ package com.pulsebysolutions.onlinebookstoreinternshipproject.service;
 import com.pulsebysolutions.onlinebookstoreinternshipproject.entity.BookImage;
 import com.pulsebysolutions.onlinebookstoreinternshipproject.exception.ResourceNotFoundException;
 import com.pulsebysolutions.onlinebookstoreinternshipproject.interfaces.ImageStorageService;
-import com.pulsebysolutions.onlinebookstoreinternshipproject.repository.ImageRespository;
+import com.pulsebysolutions.onlinebookstoreinternshipproject.repository.ImageRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,9 +15,9 @@ import java.util.UUID;
 public class FakeImageManager implements ImageStorageService {
 
     private static final Set<String> ALLOWED_EXTENSIONS = Set.of(".jpg", ".jpeg", ".png", ".webp");
-    private final ImageRespository imageRepository;
+    private final ImageRepository imageRepository;
 
-    public FakeImageManager(ImageRespository imageRepository) {
+    public FakeImageManager(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
     }
 

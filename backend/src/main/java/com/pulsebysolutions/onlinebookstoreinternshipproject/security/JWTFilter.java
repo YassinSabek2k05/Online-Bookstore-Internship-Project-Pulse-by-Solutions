@@ -1,6 +1,7 @@
 package com.pulsebysolutions.onlinebookstoreinternshipproject.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -12,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -51,6 +53,8 @@ public class JWTFilter extends OncePerRequestFilter {
             }
         } catch (ExpiredJwtException e) {
             logger.warn("Expired JWT token, clearing cookie");
+            SecurityContextHolder.clearContext();
+
             Cookie expiredCookie = new Cookie("user_token", "");
             expiredCookie.setMaxAge(0);
             expiredCookie.setPath("/");
@@ -58,8 +62,13 @@ public class JWTFilter extends OncePerRequestFilter {
             expiredCookie.setSecure(true);
             expiredCookie.setAttribute("SameSite", "None");
             response.addCookie(expiredCookie);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (JwtException | IllegalArgumentException | UsernameNotFoundException e) {
+            // Malformed, tampered with, or pointing at a user who no longer
+            // exists. A bad token is not a server fault: leave the request
+            // unauthenticated so the entry point answers 401 (spec §7.7)
+            // instead of letting this escape the chain as a 500.
+            logger.warn("Rejected invalid JWT: " + e.getMessage());
+            SecurityContextHolder.clearContext();
         }
 
 

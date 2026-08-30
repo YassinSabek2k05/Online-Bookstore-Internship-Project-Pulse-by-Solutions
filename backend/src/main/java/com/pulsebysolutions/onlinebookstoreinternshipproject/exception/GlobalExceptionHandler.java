@@ -1,5 +1,7 @@
 package com.pulsebysolutions.onlinebookstoreinternshipproject.exception;
 
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -45,6 +47,46 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
+                .body(error);
+    }
+
+    /**
+     * Bean Validation on the entities themselves fires at flush time, well
+     * after the DTO check. Without this it would surface as a 500.
+     */
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolation(
+            ConstraintViolationException exception) {
+
+        String message = exception.getConstraintViolations()
+                .stream()
+                .findFirst()
+                .map(jakarta.validation.ConstraintViolation::getMessage)
+                .orElse("Validation failed");
+
+        Map<String, Object> error = new HashMap<>();
+        error.put("status", 400);
+        error.put("message", message);
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(error);
+    }
+
+    /**
+     * The last line of defence for the unique email column — two concurrent
+     * registrations can both pass the service-level check and still collide.
+     */
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleDataIntegrityViolation(
+            DataIntegrityViolationException exception) {
+
+        Map<String, Object> error = new HashMap<>();
+        error.put("status", 409);
+        error.put("message", "Resource already exists");
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
                 .body(error);
     }
 

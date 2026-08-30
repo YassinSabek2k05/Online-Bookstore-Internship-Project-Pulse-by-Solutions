@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { Footer } from '../../shared/footer/footer';
 import { Navbar } from '../../shared/navbar/navbar';
 
 /** Public welcome page. Deliberately fetches nothing — the shelf is behind login. */
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, Navbar],
+  imports: [RouterLink, Navbar, Footer],
   templateUrl: './landing.html',
   styleUrl: './landing.css',
 })

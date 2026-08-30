@@ -1,8 +1,16 @@
+/* Keeps the footer at the bottom when the shelf is short or errored. */
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 /* ── Hero ────────────────────────────────────────────── */
 
 .hero {
   position: relative;
   height: 420px;
+  flex-shrink: 0;
   /* Same brown in both themes: a cut-out against cream, a raised block in dark. */
   background: #382110;
 }
@@ -64,11 +72,14 @@
   align-items: center;
   height: 48px;
   padding: 0 26px;
+  font-family: var(--font-body);
   font-size: 15px;
   font-weight: 700;
   color: #382110;
   background: #f7f3ec;
+  border: none;
   border-radius: var(--radius);
+  cursor: pointer;
 }
 
 .btn-cream:hover {
@@ -150,9 +161,11 @@
 /* ── Shelf ───────────────────────────────────────────── */
 
 .shelf {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 104px 24px 88px;
+  flex-grow: 1;
 }
 
 .shelf-head {
