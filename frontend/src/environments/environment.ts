@@ -1,3 +1,7 @@
+const serverUrl = 'http://localhost:8080';
+
 export const environment = {
-  apiUrl: 'http://localhost:8080/api',
+  /** Origin only — image URLs come back server-relative and need this prefixed. */
+  serverUrl,
+  apiUrl: `${serverUrl}/api`,
 };

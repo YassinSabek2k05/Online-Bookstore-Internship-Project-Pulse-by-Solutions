@@ -1,0 +1,101 @@
+.navbar {
+  height: 72px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.navbar-inner {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.16em;
+  color: var(--text);
+}
+
+.wordmark:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Only rendered for admins — the way into the dashboard from the storefront. */
+.admin-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.admin-link:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.greeting {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.greeting strong {
+  color: var(--text);
+}
+
+.signin-link {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.btn-solid,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 18px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.btn-solid {
+  color: var(--btn-fg);
+  background: var(--btn-bg);
+  border: none;
+}
+
+.btn-solid:hover {
+  background: var(--btn-bg-hover);
+  color: var(--btn-fg);
+  text-decoration: none;
+}
+
+.btn-ghost {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--text-muted);
+}

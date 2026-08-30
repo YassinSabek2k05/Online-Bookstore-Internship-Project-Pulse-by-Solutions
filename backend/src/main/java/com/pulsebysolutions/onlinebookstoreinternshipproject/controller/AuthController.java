@@ -37,4 +37,15 @@ public class AuthController {
         authService.register(request);
         return ResponseEntity.status(201).build();
     }
+
+    /**
+     * Sits under /api/auth/** (permitAll) on purpose: logging out must succeed
+     * even when the token is already expired or missing.
+     */
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+
+        response.addCookie(authService.logout());
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -34,7 +34,8 @@ export class Signup {
   protected readonly form = inject(FormBuilder).nonNullable.group(
     {
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9\s-]{7,15}$/)]],
+      // Must match RegisterRequest's @Pattern exactly — digits only, no spaces.
+      phone: ['', [Validators.required, Validators.pattern(/^\+?[0-9]{10,15}$/)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]],
     },

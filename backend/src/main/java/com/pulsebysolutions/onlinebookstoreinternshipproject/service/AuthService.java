@@ -50,12 +50,26 @@ public class AuthService {
                 jwtExpirationInMs
         );
 
-        Cookie cookie = new Cookie("user_token", token);
+        return buildTokenCookie(token, (int) (jwtExpirationInMs / 1000));
+    }
+
+    /**
+     * Expires the auth cookie. The browser only replaces a cookie when the
+     * name, path and attributes all match the one it stored, so this must be
+     * built exactly like the login cookie — only the value and max-age differ.
+     */
+    public Cookie logout() {
+        return buildTokenCookie("", 0);
+    }
+
+    private Cookie buildTokenCookie(String value, int maxAgeSeconds) {
+
+        Cookie cookie = new Cookie("user_token", value);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setAttribute("SameSite", "None");
-        cookie.setMaxAge((int) (jwtExpirationInMs / 1000));
+        cookie.setMaxAge(maxAgeSeconds);
 
         return cookie;
     }
@@ -76,15 +90,11 @@ public class AuthService {
 
     private void validate(RegisterRequest request) {
 
+        // Password confirmation is declared on RegisterRequest itself, so it is
+        // already enforced by @Valid before this runs.
         if (userRepository.getByEmail(request.email()) != null) {
             throw new DuplicateResourceException(
                     "Email already exists"
-            );
-        }
-
-        if (!request.password().equals(request.confirmPassword())) {
-            throw new IllegalArgumentException(
-                    "Confirm password must match password"
             );
         }
     }

@@ -1,10 +1,13 @@
 package com.pulsebysolutions.onlinebookstoreinternshipproject.controller;
 
-import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.request.CreateAdminRequest;
-import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.response.AdminResponse;
+import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.request.RegisterRequest;
+import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.response.UserResponse;
+import com.pulsebysolutions.onlinebookstoreinternshipproject.entity.User;
 import com.pulsebysolutions.onlinebookstoreinternshipproject.service.AdminService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +23,13 @@ public class AdminController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AdminResponse>> getAllAdmins() {
+    public ResponseEntity<List<UserResponse>> getAllAdmins() {
         return ResponseEntity.ok(adminService.getAllAdmins());
     }
 
     @PostMapping
-    public ResponseEntity<AdminResponse> createAdmin(
-            @RequestBody CreateAdminRequest request) {
+    public ResponseEntity<UserResponse> createAdmin(
+            @Valid @RequestBody RegisterRequest request) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -34,9 +37,11 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAdmin(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteAdmin(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User currentUser) {
 
-        adminService.deleteAdmin(id);
+        adminService.deleteAdmin(id, currentUser);
 
         return ResponseEntity.noContent().build();
     }

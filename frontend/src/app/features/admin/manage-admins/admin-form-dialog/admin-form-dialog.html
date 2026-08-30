@@ -1,0 +1,88 @@
+<div class="backdrop">
+  <form class="dialog" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="dialog-head">
+      <h2>Add New Admin</h2>
+      <button type="button" class="dialog-close" aria-label="Close" (click)="cancelled.emit()">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="dialog-body">
+      <div class="field">
+        <label for="admin-email">Email</label>
+        <input id="admin-email" type="email" formControlName="email" placeholder="name@bookstore.com"
+               [class.invalid]="form.controls.email.touched && form.controls.email.invalid" />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+          <span class="field-error">
+            @if (form.controls.email.hasError('required')) {
+              Email is required.
+            } @else {
+              Enter a valid email address.
+            }
+          </span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="admin-phone">Phone number</label>
+        <input id="admin-phone" type="tel" formControlName="phone" placeholder="+962799999999"
+               [class.invalid]="form.controls.phone.touched && form.controls.phone.invalid" />
+        @if (form.controls.phone.touched && form.controls.phone.invalid) {
+          <span class="field-error">
+            @if (form.controls.phone.hasError('required')) {
+              Phone number is required.
+            } @else {
+              Enter 10–15 digits, no spaces.
+            }
+          </span>
+        }
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="admin-password">Password</label>
+          <input id="admin-password" type="password" formControlName="password"
+                 placeholder="At least 8 characters" autocomplete="new-password"
+                 [class.invalid]="form.controls.password.touched && form.controls.password.invalid" />
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <span class="field-error">
+              @if (form.controls.password.hasError('required')) {
+                Password is required.
+              } @else {
+                Use at least 8 characters.
+              }
+            </span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="admin-confirm">Confirm password</label>
+          <input id="admin-confirm" type="password" formControlName="confirmPassword"
+                 autocomplete="new-password"
+                 [class.invalid]="form.controls.confirmPassword.touched && form.hasError('passwordMismatch')" />
+          @if (form.controls.confirmPassword.touched) {
+            @if (form.controls.confirmPassword.hasError('required')) {
+              <span class="field-error">Please confirm the password.</span>
+            } @else if (form.hasError('passwordMismatch')) {
+              <span class="field-error">Passwords do not match.</span>
+            }
+          }
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="form-error">{{ errorMessage() }}</p>
+      }
+    </div>
+
+    <div class="dialog-foot">
+      <button type="button" class="btn-cancel" (click)="cancelled.emit()">Cancel</button>
+      <button type="submit" class="btn-save" [disabled]="saving()">
+        {{ saving() ? 'Creating…' : 'Create admin' }}
+      </button>
+    </div>
+  </form>
+</div>

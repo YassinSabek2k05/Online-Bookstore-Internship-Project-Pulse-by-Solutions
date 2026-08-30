@@ -1,0 +1,62 @@
+<app-navbar />
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="eyebrow">ONLINE BOOKSTORE</div>
+      <h1>Find your<br />next chapter.</h1>
+      <p>A small, carefully kept shelf of classics, chosen one at a time and kept in print.</p>
+      <div class="hero-actions">
+        <a class="btn-cream" href="#shelf">Explore books</a>
+        @if (!loading() && !errorMessage()) {
+          <span class="hero-count">
+            {{ books().length }} {{ books().length === 1 ? 'title' : 'titles' }} in stock
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      <div class="art-cover" style="background: #4F5B36">
+        <span class="art-title">Jane Eyre</span>
+        <span class="art-author">Charlotte Brontë</span>
+      </div>
+      <div class="art-cover" style="background: #8C4A2F">
+        <span class="art-title">Moby-Dick</span>
+        <span class="art-author">Herman Melville</span>
+      </div>
+      <div class="art-cover" style="background: #2C3A55">
+        <span class="art-title">Frankenstein</span>
+        <span class="art-author">Mary Shelley</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="shelf" id="shelf">
+  <div class="shelf-head">
+    <h2>On the shelf</h2>
+    @if (!loading() && !errorMessage() && books().length > 0) {
+      <span class="shelf-count">Showing all {{ books().length }}</span>
+    }
+  </div>
+
+  @if (loading()) {
+    <p class="state">Loading books…</p>
+  } @else if (errorMessage()) {
+    <p class="state state-error">Couldn’t load books — {{ errorMessage() }}</p>
+  } @else if (books().length === 0) {
+    <p class="state">No books on the shelf yet.</p>
+  } @else {
+    <div class="grid">
+      @for (book of books(); track book.id) {
+        <article class="card">
+          <app-book-cover [book]="book" />
+          <h3 class="card-title" [title]="book.title">{{ book.title }}</h3>
+          <div class="card-price">{{ book.price | currency: 'USD' }}</div>
+          <a class="card-btn" [routerLink]="['/books', book.id]">View details</a>
+        </article>
+      }
+    </div>
+  }
+</section>

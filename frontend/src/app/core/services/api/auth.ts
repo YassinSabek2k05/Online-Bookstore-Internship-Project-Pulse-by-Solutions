@@ -1,11 +1,11 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LoginRequest, RegisterRequest } from '../../models/user.model';
 import { ApiService } from '../api.service';
+import { LoginRequest, RegisterRequest } from '../../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApi {
-  private readonly api = inject(ApiService);
+  constructor(private readonly api: ApiService) {}
 
   /** Both endpoints return an empty body; login's response sets the auth cookie. */
   login(request: LoginRequest): Observable<void> {
@@ -14,5 +14,10 @@ export class AuthApi {
 
   register(request: RegisterRequest): Observable<void> {
     return this.api.post<void>('/auth/register', request);
+  }
+
+  /** Expires the auth cookie server-side; the client cannot clear it itself. */
+  logout(): Observable<void> {
+    return this.api.post<void>('/auth/logout', {});
   }
 }

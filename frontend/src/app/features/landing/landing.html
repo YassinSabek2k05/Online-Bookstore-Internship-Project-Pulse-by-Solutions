@@ -1,0 +1,24 @@
+<div class="landing">
+  <app-navbar />
+
+  <section class="hero">
+    <div class="hero-text">
+      <div class="eyebrow">ONLINE BOOKSTORE</div>
+      <h1>Find your next chapter.</h1>
+      <p>A small, carefully kept shelf of classics. Create an account to start browsing.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" routerLink="/signup">Create an account</a>
+        <a class="btn-secondary" routerLink="/login">Sign in</a>
+      </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true">
+      @for (cover of decorativeCovers; track cover.title) {
+        <div class="art-cover" [style.background]="cover.color">
+          <span class="art-title">{{ cover.title }}</span>
+          <span class="art-author">{{ cover.author }}</span>
+        </div>
+      }
+    </div>
+  </section>
+</div>

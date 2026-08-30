@@ -1,0 +1,15 @@
+<div class="backdrop" (click)="cancelled.emit()">
+  <div class="dialog" role="alertdialog" (click)="$event.stopPropagation()">
+    <h2>{{ title() }}</h2>
+    <p>{{ message() }}</p>
+
+    <div class="actions">
+      <button type="button" class="btn-cancel" [disabled]="busy()" (click)="cancelled.emit()">
+        Cancel
+      </button>
+      <button type="button" class="btn-danger" [disabled]="busy()" (click)="confirmed.emit()">
+        {{ busy() ? 'Working…' : confirmLabel() }}
+      </button>
+    </div>
+  </div>
+</div>

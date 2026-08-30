@@ -1,0 +1,125 @@
+<div class="backdrop">
+  <form class="dialog" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="dialog-head">
+      <h2>{{ isEdit() ? 'Edit Book' : 'Add New Book' }}</h2>
+      <button type="button" class="dialog-close" aria-label="Close" (click)="cancel()">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor"
+             stroke-width="1.7" stroke-linecap="round">
+          <path d="M18 6 6 18M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="dialog-body">
+      <!-- Uploads on pick, before the book is saved. -->
+      <div class="field">
+        <label for="cover">Cover image</label>
+
+        <div class="upload">
+          @if (previewSrc(); as src) {
+            <img class="upload-preview" [src]="src" alt="Selected cover" />
+          } @else {
+            <div class="upload-preview upload-empty">No cover</div>
+          }
+
+          <div class="upload-detail">
+            @if (uploading()) {
+              <div class="upload-name">Uploading…</div>
+            } @else if (imageUrl(); as url) {
+              <div class="upload-name">{{ uploadedName() ?? 'Current cover' }}</div>
+              <div class="hint">{{ url }}</div>
+            } @else {
+              <div class="upload-name">No cover chosen</div>
+            }
+
+            <div class="upload-actions">
+              <label class="link-btn" for="cover">{{ imageUrl() ? 'Replace' : 'Choose file' }}</label>
+              @if (imageUrl()) {
+                <button type="button" class="link-btn danger" (click)="removeImage()">Remove</button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <input id="cover" type="file" class="file-input" accept=".jpg,.jpeg,.png,.webp"
+               (change)="onFileSelected($event)" />
+
+        @if (uploadError()) {
+          <span class="field-error">{{ uploadError() }}</span>
+        } @else {
+          <span class="hint">JPG, PNG or WEBP. Uploaded as soon as you pick it.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="title">Title</label>
+        <input id="title" formControlName="title"
+               [class.invalid]="form.controls.title.touched && form.controls.title.invalid" />
+        @if (form.controls.title.touched && form.controls.title.invalid) {
+          <span class="field-error">Title is required.</span>
+        }
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="author">Author</label>
+          <input id="author" formControlName="author"
+                 [class.invalid]="form.controls.author.touched && form.controls.author.invalid" />
+          @if (form.controls.author.touched && form.controls.author.invalid) {
+            <span class="field-error">Author is required.</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="category">Category</label>
+          <div class="select-wrap">
+            <select id="category" formControlName="category"
+                    [class.invalid]="form.controls.category.touched && form.controls.category.invalid">
+              <option value="" disabled>Choose a category</option>
+              @if (legacyCategory(); as legacy) {
+                <option [value]="legacy">{{ legacy }}</option>
+              }
+              @for (group of categoryGroups; track group.label) {
+                <optgroup [label]="group.label">
+                  @for (category of group.categories; track category) {
+                    <option [value]="category">{{ category }}</option>
+                  }
+                </optgroup>
+              }
+            </select>
+          </div>
+          @if (form.controls.category.touched && form.controls.category.invalid) {
+            <span class="field-error">Category is required.</span>
+          }
+        </div>
+      </div>
+
+      <div class="field-narrow">
+        <div class="field">
+          <label for="price">Price</label>
+          <input id="price" type="number" step="0.01" min="0.01" formControlName="price"
+                 [class.invalid]="form.controls.price.touched && form.controls.price.invalid" />
+          @if (form.controls.price.touched && form.controls.price.invalid) {
+            <span class="field-error">Must be greater than zero.</span>
+          }
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="description">Description</label>
+        <textarea id="description" formControlName="description"></textarea>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="form-error">{{ errorMessage() }}</p>
+      }
+    </div>
+
+    <div class="dialog-foot">
+      <button type="button" class="btn-cancel" (click)="cancel()">Cancel</button>
+      <button type="submit" class="btn-save" [disabled]="saving() || uploading()">
+        {{ saving() ? 'Saving…' : 'Save book' }}
+      </button>
+    </div>
+  </form>
+</div>

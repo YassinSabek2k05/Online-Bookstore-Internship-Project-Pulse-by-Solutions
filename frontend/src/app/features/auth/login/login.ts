@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ApiError } from '../../../core/models/api-error.model';
-import { AuthApi } from '../../../core/services/api/auth';
+import { AuthService } from '../../../core/services/auth.service';
 import { ThemeToggle } from '../../../shared/theme-toggle/theme-toggle';
 
 @Component({
@@ -12,7 +12,7 @@ import { ThemeToggle } from '../../../shared/theme-toggle/theme-toggle';
   styleUrl: '../auth.css',
 })
 export class Login {
-  private readonly authApi = inject(AuthApi);
+  private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
 
   protected readonly submitting = signal(false);
@@ -32,12 +32,9 @@ export class Login {
     this.submitting.set(true);
     this.errorMessage.set(null);
 
-    this.authApi.login(this.form.getRawValue()).subscribe({
-      next: () => {
-        // TODO: role-based redirect (spec §2) needs GET /api/users/me, which the
-        // backend does not expose yet — everyone lands on /home for now.
-        this.router.navigateByUrl('/home');
-      },
+    this.auth.login(this.form.getRawValue()).subscribe({
+      // Spec §2: ADMIN goes to the dashboard, USER to the storefront.
+      next: (user) => this.router.navigateByUrl(user.role === 'ADMIN' ? '/admin/books' : '/home'),
       error: (error: ApiError) => {
         this.submitting.set(false);
         this.errorMessage.set(

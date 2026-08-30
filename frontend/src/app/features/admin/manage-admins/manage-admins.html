@@ -1,0 +1,56 @@
+<div class="page-head">
+  <div>
+    <h1>Manage Admins</h1>
+    @if (!loading() && !errorMessage()) {
+      <p>{{ admins().length }} {{ admins().length === 1 ? 'administrator' : 'administrators' }}</p>
+    }
+  </div>
+  <button type="button" class="btn-primary" (click)="dialogOpen.set(true)">+ Add New Admin</button>
+</div>
+
+@if (loading()) {
+  <p class="state">Loading administrators…</p>
+} @else if (errorMessage()) {
+  <p class="state state-error">{{ errorMessage() }}</p>
+} @else {
+  <div class="thead admins-grid">
+    <div>ID</div>
+    <div>Email</div>
+    <div>Phone Number</div>
+    <div>Role</div>
+    <div>Actions</div>
+  </div>
+
+  @for (admin of admins(); track admin.id) {
+    <div class="trow admins-grid">
+      <div class="cell-id">{{ admin.id }}</div>
+      <div>{{ admin.email }}</div>
+      <div class="cell-muted">{{ admin.phone }}</div>
+      <div><span class="pill">{{ admin.role }}</span></div>
+      <div>
+        @if (admin.id === currentUserId()?.id) {
+          <span class="you-note">That’s you</span>
+        } @else {
+          <button type="button" class="mini-btn danger" (click)="pendingDelete.set(admin)">
+            Delete
+          </button>
+        }
+      </div>
+    </div>
+  }
+}
+
+@if (dialogOpen()) {
+  <app-admin-form-dialog (saved)="onSaved()" (cancelled)="dialogOpen.set(false)" />
+}
+
+@if (pendingDelete(); as admin) {
+  <app-confirm-dialog
+    title="Remove administrator"
+    [message]="admin.email + ' will lose admin access and be removed from the system.'"
+    confirmLabel="Remove"
+    [busy]="deleting()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="pendingDelete.set(null)"
+  />
+}

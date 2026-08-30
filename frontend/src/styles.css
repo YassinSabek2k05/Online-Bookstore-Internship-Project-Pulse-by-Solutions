@@ -13,7 +13,14 @@
   --btn-fg: #ffffff;
   --placeholder: #a9a093;
   --danger: #a33a2a;
+  --danger-border: #e0c4be;
+  /* Label colour for a solid danger button — flips with the palette. */
+  --danger-fg: #ffffff;
   --focus-ring: rgba(56, 33, 16, 0.22);
+  /* Table row rules sit lighter than section borders. */
+  --border-soft: #e3ded3;
+  --pill-fg: #4f5b36;
+  --pill-bg: #e7e9dc;
 
   --radius: 3px;
   --font-display: Merriweather, Georgia, serif;
@@ -33,7 +40,12 @@
   --btn-fg: #241e18;
   --placeholder: #7a6e60;
   --danger: #e08975;
+  --danger-border: #4a2f2a;
+  --danger-fg: #2a1a15;
   --focus-ring: rgba(232, 223, 210, 0.28);
+  --border-soft: #2e2720;
+  --pill-fg: #c3cfa4;
+  --pill-bg: #2b3122;
 }
 
 * {

@@ -85,6 +85,15 @@ public class SecurityConfig {
                         // Authentication
                         .requestMatchers("/api/auth/**").permitAll()
 
+                        // Swagger UI and the generated spec — without these the
+                        // docs sit behind .anyRequest().authenticated() and 401.
+                        .requestMatchers(
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**"
+                        ).permitAll()
+
                         // Books - USER + ADMIN
                         .requestMatchers(
                                 HttpMethod.GET,

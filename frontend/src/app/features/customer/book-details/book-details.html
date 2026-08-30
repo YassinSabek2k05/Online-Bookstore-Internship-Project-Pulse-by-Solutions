@@ -1,0 +1,37 @@
+<app-navbar />
+
+<section class="details">
+  <a class="back" routerLink="/home">
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 12H5M12 19l-7-7 7-7" />
+    </svg>
+    Back to the shelf
+  </a>
+
+  @if (loading()) {
+    <p class="state">Loading…</p>
+  } @else if (errorMessage()) {
+    <p class="state state-error">{{ errorMessage() }}</p>
+  } @else if (book(); as book) {
+    <div class="layout">
+      <div class="cover-column">
+        <app-book-cover [book]="book" />
+      </div>
+
+      <div class="info">
+        <span class="category">{{ book.category }}</span>
+        <h1>{{ book.title }}</h1>
+        <p class="author">by {{ book.author }}</p>
+
+        <div class="price">{{ book.price | currency: 'USD' }}</div>
+
+        @if (book.description) {
+          <p class="description">{{ book.description }}</p>
+        } @else {
+          <p class="description muted">No description has been added for this book yet.</p>
+        }
+      </div>
+    </div>
+  }
+</section>

@@ -9,4 +9,5 @@ public interface ImageStorageService {
 
     String store(MultipartFile file) throws IOException;
     BookImage retrieve(String key);
+    void delete(String key);
 }

@@ -15,6 +15,12 @@
   font-weight: 700;
   font-size: 22px;
   letter-spacing: 0.16em;
+  color: var(--text);
+}
+
+.wordmark:hover {
+  color: var(--text);
+  text-decoration: none;
 }
 
 .auth-card {

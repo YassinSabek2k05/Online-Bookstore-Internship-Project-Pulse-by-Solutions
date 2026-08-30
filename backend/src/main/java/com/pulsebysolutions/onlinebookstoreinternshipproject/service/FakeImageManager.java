@@ -50,4 +50,12 @@ public class FakeImageManager implements ImageStorageService {
         return imageRepository.findById(key)
                 .orElseThrow(() -> new ResourceNotFoundException("Image not found: " + key));
     }
+
+    /** Used to clean up a cover uploaded for a book that was never saved. */
+    public void delete(String key) {
+        if (!imageRepository.existsById(key)) {
+            throw new ResourceNotFoundException("Image not found: " + key);
+        }
+        imageRepository.deleteById(key);
+    }
 }

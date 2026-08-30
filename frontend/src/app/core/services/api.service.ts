@@ -36,15 +36,55 @@ export class ApiService {
     return this.http.delete<T>(this.url(path)).pipe(catchError(this.handleError));
   }
 
+  /**
+   * Multipart upload returning a plain-text body. Content-Type is deliberately
+   * left unset so the browser adds the multipart boundary itself.
+   */
+  postFormForText(path: string, form: FormData): Observable<string> {
+    return this.http
+      .post(this.url(path), form, { responseType: 'text' })
+      .pipe(catchError(this.handleError));
+  }
+
   private url(path: string): string {
     return `${this.baseUrl}${path}`;
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    const apiError: ApiError = {
+    return throwError(() => ({
       status: error.status,
-      message: error.error?.message ?? error.message ?? 'Unexpected error',
-    };
-    return throwError(() => apiError);
+      message: extractMessage(error),
+    }) satisfies ApiError);
   }
+}
+
+/**
+ * GlobalExceptionHandler always replies { status, message }, but on a
+ * responseType:'text' request that arrives as an unparsed JSON string.
+ */
+function extractMessage(error: HttpErrorResponse): string {
+  const body: unknown = error.error;
+
+  if (typeof body === 'string') {
+    try {
+      const parsed = JSON.parse(body) as { message?: string };
+      if (parsed?.message) {
+        return parsed.message;
+      }
+    } catch {
+      // Not JSON — the raw text is the best message available.
+    }
+    if (body.trim()) {
+      return body;
+    }
+  }
+
+  if (body && typeof body === 'object' && 'message' in body) {
+    const message = (body as { message?: unknown }).message;
+    if (typeof message === 'string') {
+      return message;
+    }
+  }
+
+  return error.message || 'Unexpected error';
 }

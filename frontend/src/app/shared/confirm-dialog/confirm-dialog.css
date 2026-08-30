@@ -1,0 +1,78 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(30, 20, 10, 0.46);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.dialog {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px 30px 24px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.3);
+}
+
+.dialog h2 {
+  margin: 0 0 10px;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 21px;
+  color: var(--text);
+}
+
+.dialog p {
+  margin: 0 0 24px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-cancel,
+.btn-danger {
+  height: 42px;
+  padding: 0 20px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: var(--radius);
+  cursor: pointer;
+}
+
+.btn-cancel {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.btn-cancel:hover:not(:disabled) {
+  border-color: var(--text-muted);
+}
+
+.btn-danger {
+  color: var(--danger-fg);
+  background: var(--danger);
+  border: none;
+}
+
+.btn-danger:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.btn-cancel:disabled,
+.btn-danger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}

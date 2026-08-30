@@ -1,5 +1,5 @@
 <div class="auth-page">
-  <div class="wordmark">BOOK STORE</div>
+  <a class="wordmark" routerLink="/">BOOK STORE</a>
 
   <form class="auth-card" [formGroup]="form" (ngSubmit)="submit()">
     <div class="auth-head">
@@ -35,7 +35,7 @@
           id="phone"
           type="tel"
           formControlName="phone"
-          placeholder="+962 7 9999 9999"
+          placeholder="+962799999999"
           autocomplete="tel"
           [class.invalid]="form.controls.phone.touched && form.controls.phone.invalid"
         />
@@ -44,7 +44,7 @@
             @if (form.controls.phone.hasError('required')) {
               Phone number is required.
             } @else {
-              Enter a valid phone number.
+              Enter 10–15 digits, no spaces.
             }
           </span>
         }

@@ -31,10 +31,14 @@ public class GlobalExceptionHandler {
 
         Map<String, Object> error = new HashMap<>();
 
+        // getFieldErrors() is empty for class-level constraints, so fall back to
+        // all errors rather than letting getFirst() throw and turn a 400 into a 500.
         String message = exception.getBindingResult()
-                .getFieldErrors()
-                .getFirst()
-                .getDefaultMessage();
+                .getAllErrors()
+                .stream()
+                .findFirst()
+                .map(org.springframework.validation.ObjectError::getDefaultMessage)
+                .orElse("Validation failed");
 
         error.put("status", 400);
         error.put("message", message);

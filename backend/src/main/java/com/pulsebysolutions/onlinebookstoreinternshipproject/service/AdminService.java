@@ -1,7 +1,7 @@
 package com.pulsebysolutions.onlinebookstoreinternshipproject.service;
 
-import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.request.CreateAdminRequest;
-import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.response.AdminResponse;
+import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.request.RegisterRequest;
+import com.pulsebysolutions.onlinebookstoreinternshipproject.dto.response.UserResponse;
 import com.pulsebysolutions.onlinebookstoreinternshipproject.entity.User;
 import com.pulsebysolutions.onlinebookstoreinternshipproject.entity.User.Role;
 import com.pulsebysolutions.onlinebookstoreinternshipproject.exception.DuplicateResourceException;
@@ -24,33 +24,41 @@ public class AdminService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<AdminResponse> getAllAdmins() {
+    public List<UserResponse> getAllAdmins() {
 
         return userRepository.findAllByRole(Role.ADMIN)
                 .stream()
-                .map(AdminResponse::fromUser)
+                .map(UserResponse::fromUser)
                 .toList();
     }
 
-    public AdminResponse createAdmin(CreateAdminRequest request) {
+    public UserResponse createAdmin(RegisterRequest request) {
 
         if (userRepository.getByEmail(request.email()) != null) {
             throw new DuplicateResourceException("Email already exists");
         }
 
-        User admin = new User();
+        // The request carries no role field at all, so ADMIN can only ever be
+        // assigned here on the server (spec §7.4).
+        User admin = RegisterRequest.toUser(request);
 
-        admin.setEmail(request.email());
         admin.setPassword(passwordEncoder.encode(request.password()));
-        admin.setPhone(request.phone());
         admin.setRole(Role.ADMIN);
 
         User savedAdmin = userRepository.save(admin);
 
-        return AdminResponse.fromUser(savedAdmin);
+        return UserResponse.fromUser(savedAdmin);
     }
 
-    public void deleteAdmin(Long id) {
+    public void deleteAdmin(Long id, User currentUser) {
+
+        // Without this an admin can delete themselves, and deleting the last
+        // admin would leave nobody able to administer the store.
+        if (currentUser.getId().equals(id)) {
+            throw new IllegalArgumentException(
+                    "You cannot delete your own admin account"
+            );
+        }
 
         User admin = userRepository.findById(id)
                 .orElseThrow(() ->

@@ -1,0 +1,64 @@
+<div class="page-head">
+  <div>
+    <h1>Manage Books</h1>
+    @if (!loading() && !errorMessage()) {
+      <p>{{ books().length }} {{ books().length === 1 ? 'book' : 'books' }} in the catalogue</p>
+    }
+  </div>
+  <button type="button" class="btn-primary" (click)="openCreate()">+ Add New Book</button>
+</div>
+
+@if (loading()) {
+  <p class="state">Loading books…</p>
+} @else if (errorMessage()) {
+  <p class="state state-error">{{ errorMessage() }}</p>
+} @else if (books().length === 0) {
+  <p class="state">No books yet — add the first one.</p>
+} @else {
+  <div class="thead books-grid">
+    <div>ID</div>
+    <div>Image</div>
+    <div>Title</div>
+    <div>Author</div>
+    <div>Category</div>
+    <div>Price</div>
+    <div>Actions</div>
+  </div>
+
+  @for (book of books(); track book.id) {
+    <div class="trow books-grid">
+      <div class="cell-id">{{ book.id }}</div>
+      <div>
+        @if (thumbSrc(book.imageUrl); as src) {
+          <img class="thumb" [src]="src" [alt]="'Cover of ' + book.title" />
+        } @else {
+          <div class="thumb thumb-empty">—</div>
+        }
+      </div>
+      <div class="cell-title">{{ book.title }}</div>
+      <div class="cell-muted">{{ book.author }}</div>
+      <div class="cell-muted">{{ book.category }}</div>
+      <div class="cell-price">{{ book.price | currency: 'USD' }}</div>
+      <div class="row-actions">
+        <button type="button" class="mini-btn" (click)="openEdit(book)">Edit</button>
+        <button type="button" class="mini-btn danger" (click)="pendingDelete.set(book)">
+          Delete
+        </button>
+      </div>
+    </div>
+  }
+}
+
+@if (dialogOpen()) {
+  <app-book-form-dialog [book]="editing()" (saved)="onSaved()" (cancelled)="closeDialog()" />
+}
+
+@if (pendingDelete(); as book) {
+  <app-confirm-dialog
+    title="Delete book"
+    [message]="'“' + book.title + '” will be removed from the catalogue. This cannot be undone.'"
+    [busy]="deleting()"
+    (confirmed)="confirmDelete()"
+    (cancelled)="pendingDelete.set(null)"
+  />
+}

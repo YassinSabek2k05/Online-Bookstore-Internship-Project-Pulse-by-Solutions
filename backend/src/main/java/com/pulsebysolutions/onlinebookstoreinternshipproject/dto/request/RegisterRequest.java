@@ -1,6 +1,7 @@
 package com.pulsebysolutions.onlinebookstoreinternshipproject.dto.request;
 
 import com.pulsebysolutions.onlinebookstoreinternshipproject.entity.User;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -30,6 +31,15 @@ public record RegisterRequest(
         String confirmPassword
 
 ) {
+
+    /**
+     * Named isXxx so Bean Validation treats it as a property — the violation
+     * then surfaces as a field error, which is what the exception handler reads.
+     */
+    @AssertTrue(message = "Confirm password must match password")
+    public boolean isPasswordConfirmed() {
+        return password != null && password.equals(confirmPassword);
+    }
 
     public static User toUser(RegisterRequest request) {
         return User.builder()

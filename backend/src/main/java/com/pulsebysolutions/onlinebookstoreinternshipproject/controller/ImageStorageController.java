@@ -26,4 +26,10 @@ public class ImageStorageController {
                 .body(img.getData());
     }
 
+    @DeleteMapping("/{key}")
+    public ResponseEntity<Void> deleteImage(@PathVariable String key) {
+        imageStorageService.delete(key);
+        return ResponseEntity.noContent().build();
+    }
+
 }

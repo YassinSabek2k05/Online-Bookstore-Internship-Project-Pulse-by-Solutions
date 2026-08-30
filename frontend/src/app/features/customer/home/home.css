@@ -1,0 +1,280 @@
+/* ── Hero ────────────────────────────────────────────── */
+
+.hero {
+  position: relative;
+  height: 420px;
+  /* Same brown in both themes: a cut-out against cream, a raised block in dark. */
+  background: #382110;
+}
+
+.hero-inner {
+  max-width: 1200px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.hero-text {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-bottom: 12px;
+}
+
+.eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: #b7a48c;
+}
+
+.hero-text h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 58px;
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  color: #f7f3ec;
+  text-wrap: pretty;
+}
+
+.hero-text p {
+  margin: 0;
+  max-width: 430px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #c9bca6;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 6px;
+}
+
+.btn-cream {
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 26px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #382110;
+  background: #f7f3ec;
+  border-radius: var(--radius);
+}
+
+.btn-cream:hover {
+  background: #ffffff;
+  color: #382110;
+  text-decoration: none;
+}
+
+.hero-count {
+  font-size: 14px;
+  color: #9c8b75;
+}
+
+.hero-art {
+  position: relative;
+  width: 430px;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.art-cover {
+  position: absolute;
+  aspect-ratio: 2 / 3;
+  border-radius: 2px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 20px 18px 22px;
+}
+
+.art-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 7px;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.art-cover:nth-child(1) {
+  top: 96px;
+  left: 0;
+  width: 186px;
+  transform: rotate(-7deg);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
+}
+
+.art-cover:nth-child(2) {
+  top: 132px;
+  left: 130px;
+  width: 200px;
+  transform: rotate(3deg);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.38);
+}
+
+.art-cover:nth-child(3) {
+  top: 84px;
+  left: 272px;
+  width: 176px;
+  transform: rotate(9deg);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
+}
+
+.art-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.25;
+  color: #f7f3ec;
+}
+
+.art-author {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(247, 243, 236, 0.62);
+}
+
+/* ── Shelf ───────────────────────────────────────────── */
+
+.shelf {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 104px 24px 88px;
+}
+
+.shelf-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.shelf-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 30px;
+}
+
+.shelf-count {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.state {
+  padding-top: 44px;
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+.state-error {
+  color: var(--danger);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 44px 32px;
+  padding-top: 44px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  height: 100%;
+}
+
+/*
+ * Titles run from two words to a full subtitle, so reserve exactly two lines
+ * and clamp longer ones — otherwise the price and button land at a different
+ * height in every card and the row stops reading as a grid.
+ */
+.card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.3;
+  min-height: 2.6em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-price {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+
+.card-btn {
+  /* Pins the button to the card's bottom edge, keeping the row aligned. */
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.card-btn:hover {
+  border-color: var(--text);
+  color: var(--text);
+  text-decoration: none;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    height: auto;
+    padding: 56px 0;
+  }
+
+  .hero-text h1 {
+    font-size: 42px;
+  }
+
+  .hero-art {
+    display: none;
+  }
+
+  .shelf {
+    padding-top: 64px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
